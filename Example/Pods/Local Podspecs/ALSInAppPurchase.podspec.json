@@ -22,7 +22,11 @@
   "public_header_files": "ALSInAppPurchase/Classes/**/*.h",
   "resources": "ALSInAppPurchase/Assets/*.bundle",
   "ios": {
-    "libraries": "stdc++"
+    "libraries": [
+      "stdc++",
+      "z",
+      "c++"
+    ]
   },
   "xcconfig": {
     "OTHER_LDFLAGS": "-ObjC",

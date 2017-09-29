@@ -13,7 +13,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ALSInAppPurchase: bdf3bf5192be34a4714833a2f94ed06d31df5e9b
+  ALSInAppPurchase: 3898e2b644462646dbee2795fe95b86a61d460ae
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PodAsset: d9d35b6a86ceaeaead63692a1bce27b4aea243b3
 

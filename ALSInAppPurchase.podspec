@@ -33,7 +33,7 @@ TODO: Add long description of the pod here.
   s.source_files = 'ALSInAppPurchase/Classes/**/*'
   s.public_header_files = 'ALSInAppPurchase/Classes/**/*.h'
   s.resources = "ALSInAppPurchase/Assets/*.bundle"
-  s.ios.library = 'stdc++'
+  s.ios.library = 'stdc++','z','c++'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-ObjC',
   'ENABLE_BITCODE' => 'NO' 
   }
