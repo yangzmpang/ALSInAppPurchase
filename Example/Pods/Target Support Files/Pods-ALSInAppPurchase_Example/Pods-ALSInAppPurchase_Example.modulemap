@@ -1,0 +1,6 @@
+framework module Pods_ALSInAppPurchase_Example {
+  umbrella header "Pods-ALSInAppPurchase_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
