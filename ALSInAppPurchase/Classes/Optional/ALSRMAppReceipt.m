@@ -243,8 +243,9 @@ static NSURL *_appleRootCertificateURL = nil;
     
     if (!p7) return nil;
     
+    // yangzm cer path
     NSData *data;
-    NSBundle* bundle = [PodAsset bundleForPod:@"ALSPayMent"];
+    NSBundle* bundle = [PodAsset bundleForPod:@"ALSInAppPurchase"];
     NSURL *certificateURL = _appleRootCertificateURL ? : [bundle URLForResource:@"ALSAppleIncRootCertificate" withExtension:@"cer"];
     
     //NSURL *certificateURL = _appleRootCertificateURL ? : [[NSBundle mainBundle] URLForResource:@"ALSAppleIncRootCertificate" withExtension:@"cer"];
