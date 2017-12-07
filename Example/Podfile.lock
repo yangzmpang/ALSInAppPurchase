@@ -1,5 +1,5 @@
 PODS:
-  - ALSInAppPurchase (0.1.0):
+  - ALSInAppPurchase (0.1.1):
     - OpenSSL
     - PodAsset
   - OpenSSL (1.0.210)
@@ -13,7 +13,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ALSInAppPurchase: 3898e2b644462646dbee2795fe95b86a61d460ae
+  ALSInAppPurchase: 04e23df780a4b724983b65c664b86fc2d2bfa452
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PodAsset: d9d35b6a86ceaeaead63692a1bce27b4aea243b3
 

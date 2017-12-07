@@ -631,7 +631,7 @@ typedef void (^RMStoreSuccessBlock)();
             
             BOOL isok = NO;
             if ( self.remoteverify ){
-                self.remoteverify( transaction.transactionIdentifier, receiptData, receiptStr,&isok );
+                self.remoteverify( transaction.transactionIdentifier, receiptData, receiptStr,&isok, nil );
                 if ( isok ){
                     [self didVerifyTransaction:transaction queue:queue];
                 }
@@ -666,6 +666,11 @@ typedef void (^RMStoreSuccessBlock)();
     SKPayment *payment = transaction.payment;
 	NSString* productIdentifier = payment.productIdentifier;
     ALSRMStoreLog(@"transaction failed with product %@ and error %@", productIdentifier, error.debugDescription);
+    
+    BOOL isok = NO;
+    if ( self.remoteverify ){
+        self.remoteverify( transaction.transactionIdentifier, nil, nil, &isok, error );
+    }
     
     if (error.code != ALSRMStoreErrorCodeUnableToCompleteVerification)
     { // If we were unable to complete the verification we want StoreKit to keep reminding us of the transaction

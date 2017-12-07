@@ -49,7 +49,7 @@ typedef void (^StoreRefreshReceiptFinished)( id pid, id anObject, NSDictionary *
 typedef void (^StoreRestoreTransactionsFailed)( id pid, id anObject, NSDictionary *aUserInfo );
 typedef void (^StoreRestoreTransactionsFinished)( id pid, id anObject, NSDictionary *aUserInfo );
 
-typedef void (^RemoteVerifyProc)( id pid, NSData* data, NSString* receiptString, BOOL* bSucceed );
+typedef void (^RemoteVerifyProc)( id pid, NSData* data, NSString* receiptString, BOOL* bSucceed, NSError* error );
 /** A StoreKit wrapper that adds blocks and notifications, plus optional receipt verification and purchase management.
  */
 
