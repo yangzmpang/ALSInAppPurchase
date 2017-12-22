@@ -93,7 +93,7 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
 
 @implementation ALSRMStoreTransactionReceiptVerifier
 
-- (void)verifyTransaction:(SKPaymentTransaction*)transaction
+- (BOOL)verifyTransaction:(SKPaymentTransaction*)transaction
                            success:(void (^)())successBlock
                            failure:(void (^)(NSError *error))failureBlock
 {    
@@ -105,7 +105,7 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
             NSError *error = [NSError errorWithDomain:ALSRMStoreErrorDomain code:0 userInfo:nil];
             failureBlock(error);
         }
-        return;
+        return NO;
     }
     static NSString *receiptDataKey = @"receipt-data";
     NSDictionary *jsonReceipt = @{receiptDataKey : receipt};
@@ -119,12 +119,13 @@ static const char _base64EncodingTable[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh
         {
             failureBlock(error);
         }
-        return;
+        return NO;
     }
     
     static NSString *productionURL = @"https://buy.itunes.apple.com/verifyReceipt";
     
     [self verifyRequestData:requestData url:productionURL success:successBlock failure:failureBlock];
+    return YES;
 }
 
 - (void)verifyRequestData:(NSData*)requestData

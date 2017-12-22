@@ -253,18 +253,32 @@ typedef void (^RMStoreSuccessBlock)();
            success:(void (^)(SKPaymentTransaction *transaction))successBlock
            failure:(void (^)(SKPaymentTransaction *transaction, NSError *error))failureBlock
 {
-    SKProduct *product = [self productForIdentifier:productIdentifier];
-    if (product == nil)
-    {
-        ALSRMStoreLog(@"unknown product id %@", productIdentifier)
-        if (failureBlock != nil)
+    //////////////////////////////////////////////////////////////////////
+     SKMutablePayment *payment;
+    // 如果先调用了查询就使用这个创建
+    if ( _products.count > 0 ){
+        SKProduct *product = [self productForIdentifier:productIdentifier];
+        if (product == nil)
         {
-            NSError *error = [NSError errorWithDomain:ALSRMStoreErrorDomain code:ALSRMStoreErrorCodeUnknownProductIdentifier userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"Unknown product identifier", @"ALSRMStore", @"Error description")}];
-            failureBlock(nil, error);
+            ALSRMStoreLog(@"unknown product id %@", productIdentifier)
+            if (failureBlock != nil)
+            {
+                NSError *error = [NSError errorWithDomain:ALSRMStoreErrorDomain code:ALSRMStoreErrorCodeUnknownProductIdentifier userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"Unknown product identifier", @"ALSRMStore", @"Error description")}];
+                failureBlock(nil, error);
+            }
+            return;
         }
-        return;
+        payment = [SKMutablePayment paymentWithProduct:product];
     }
-    SKMutablePayment *payment = [SKMutablePayment paymentWithProduct:product];
+    else{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        //  根据identifier创建
+        payment = [SKMutablePayment paymentWithProductIdentifier:productIdentifier];
+#pragma clang diagnostic pop
+    }
+    //////////////////////////////////////////////////////////////////////
+    
     if ([payment respondsToSelector:@selector(setApplicationUsername:)])
     {
         payment.applicationUsername = userIdentifier;
