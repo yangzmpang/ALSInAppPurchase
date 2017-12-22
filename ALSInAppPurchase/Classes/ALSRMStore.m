@@ -62,7 +62,7 @@ typedef void (^RMSKPaymentTransactionSuccessBlock)(SKPaymentTransaction *transac
 typedef void (^RMSKProductsRequestFailureBlock)(NSError *error);
 typedef void (^RMSKProductsRequestSuccessBlock)(NSArray *products, NSArray *invalidIdentifiers);
 typedef void (^RMStoreFailureBlock)(NSError *error);
-typedef void (^RMStoreSuccessBlock)();
+typedef void (^RMStoreSuccessBlock)(void);
 
 @implementation NSNotification(RMStore)
 
@@ -141,7 +141,7 @@ typedef void (^RMStoreSuccessBlock)();
     
     SKReceiptRefreshRequest *_refreshReceiptRequest;
     void (^_refreshReceiptFailureBlock)(NSError* error);
-    void (^_refreshReceiptSuccessBlock)();
+    void (^_refreshReceiptSuccessBlock)(void);
     
     void (^_restoreTransactionsFailureBlock)(NSError* error);
     void (^_restoreTransactionsSuccessBlock)(NSArray* transactions);
@@ -623,29 +623,33 @@ typedef void (^RMStoreSuccessBlock)();
             
             // yangzm 本地认证是否成功
             NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+            NSData* userInfo = [transaction.payment.applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+           
             NSData *receiptData = [NSData dataWithContentsOfURL:receiptURL];
             NSString *receiptStr = [receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
             
             if ( is_local_verifier_ok ){
                 if ( self.storeLocalVerifyFinished ){
-                    self.storeLocalVerifyFinished( transaction.transactionIdentifier, receiptData, receiptStr );
+                    self.storeLocalVerifyFinished( transaction.transactionIdentifier, userInfo, receiptStr );
                 }
             }
             else{
                 if ( self.storeDownloadFailed ){
-                    self.storeLocalVerifyFailed( transaction.transactionIdentifier, receiptData, receiptStr  );
+                    self.storeLocalVerifyFailed( transaction.transactionIdentifier, userInfo, receiptStr  );
                 }
             }
         }
         else{
             // yangzm 本地认证是否成功
             NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+            NSData* userInfo = [transaction.payment.applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+            
             NSData *receiptData = [NSData dataWithContentsOfURL:receiptURL];
             NSString *receiptStr = [receiptData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
             
             BOOL isok = NO;
             if ( self.remoteverify ){
-                self.remoteverify( transaction.transactionIdentifier, receiptData, receiptStr,&isok, nil );
+                self.remoteverify( transaction.transactionIdentifier, userInfo, receiptStr,&isok, nil );
                 if ( isok ){
                     [self didVerifyTransaction:transaction queue:queue];
                 }
@@ -654,15 +658,14 @@ typedef void (^RMStoreSuccessBlock)();
                 }
             }
             
-            
             if ( isok ){
                 if ( self.storeLocalVerifyFinished ){
-                    self.storeLocalVerifyFinished( transaction.transactionIdentifier, receiptData, receiptStr );
+                    self.storeLocalVerifyFinished( transaction.transactionIdentifier, userInfo, receiptStr );
                 }
             }
             else{
                 if ( self.storeDownloadFailed ){
-                    self.storeLocalVerifyFailed( transaction.transactionIdentifier, receiptData, receiptStr  );
+                    self.storeLocalVerifyFailed( transaction.transactionIdentifier, userInfo, receiptStr  );
                 }
             }
             
@@ -683,7 +686,8 @@ typedef void (^RMStoreSuccessBlock)();
     
     BOOL isok = NO;
     if ( self.remoteverify ){
-        self.remoteverify( transaction.transactionIdentifier, nil, nil, &isok, error );
+        NSData* userinfo = [transaction.payment.applicationUsername dataUsingEncoding:NSUTF8StringEncoding];
+        self.remoteverify( transaction.transactionIdentifier, userinfo, nil, &isok, error );
     }
     
     if (error.code != ALSRMStoreErrorCodeUnableToCompleteVerification)
