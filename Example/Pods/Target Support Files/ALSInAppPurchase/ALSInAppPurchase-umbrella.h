@@ -19,9 +19,6 @@
 #import "ALSRMStoreTransaction.h"
 #import "ALSRMStoreTransactionReceiptVerifier.h"
 #import "ALSRMStoreUserDefaultsPersistence.h"
-#import "WechatAuthSDK.h"
-#import "WXApi.h"
-#import "WXApiObject.h"
 
 FOUNDATION_EXPORT double ALSInAppPurchaseVersionNumber;
 FOUNDATION_EXPORT const unsigned char ALSInAppPurchaseVersionString[];
