@@ -20,11 +20,27 @@
 
 #import "ALSRMAppReceipt.h"
 #import <UIKit/UIKit.h>
+
+/*
+#if __has_include(<openssl/pkcs7.h>)
+#define ALS_IAP_OPENSSL
 #import <openssl/pkcs7.h>
 #import <openssl/objects.h>
 #import <openssl/sha.h>
 #import <openssl/x509.h>
+#endif
+*/
+
+/*
+#import <openssl/pkcs7.h>
+#import <openssl/objects.h>
+#import <openssl/sha.h>
+#import <openssl/x509.h>
+*/
+
 #import "PodAsset.h"
+
+#ifdef ALS_IAP_OPENSSL
 
 // From https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW1
 static NSInteger const RMAppReceiptASN1TypeBundleIdentifier = 2;
@@ -101,6 +117,7 @@ static NSString* RMASN1ReadIA5SString(const uint8_t **pp, long omax)
 {
     return RMASN1ReadString(pp, omax, V_ASN1_IA5STRING, NSASCIIStringEncoding);
 }
+
 
 static NSURL *_appleRootCertificateURL = nil;
 
@@ -195,6 +212,7 @@ static NSURL *_appleRootCertificateURL = nil;
     SHA1((const uint8_t*)data.bytes, data.length, (uint8_t*)expectedHash.mutableBytes); // Explicit casting to avoid errors when compiling as Objective-C++
     
     return [expectedHash isEqualToData:self.receiptHash];
+
 }
 
 + (ALSRMAppReceipt*)bundleReceipt
@@ -290,6 +308,7 @@ static NSURL *_appleRootCertificateURL = nil;
     return result == verified;
 }
 
+
 /*
  Based on https://github.com/rmaddy/VerifyStoreReceiptiOS
  */
@@ -339,6 +358,7 @@ static NSURL *_appleRootCertificateURL = nil;
     NSDate *date = [formatter dateFromString:string];
     return date;
 }
+
 
 @end
 
@@ -409,3 +429,5 @@ static NSURL *_appleRootCertificateURL = nil;
 }
 
 @end
+#endif
+

@@ -27,6 +27,7 @@
                            success:(void (^)(void))successBlock
                            failure:(void (^)(NSError *error))failureBlock
 {
+#ifdef ALS_IAP_OPENSSL
     // yangzm 这里是本地认证，如果是正确的就返回了，如果有问题就进行刷新操作
     ALSRMAppReceipt *receipt = [ALSRMAppReceipt bundleReceipt];
     const BOOL verified = [self verifyTransaction:transaction inReceipt:receipt success:successBlock failure:nil]; // failureBlock is nil intentionally. See below.
@@ -42,12 +43,17 @@
     }];
     
     return NO;
+#endif
+    return YES;
 }
 
 - (BOOL)verifyAppReceipt
 {
+#ifdef ALS_IAP_OPENSSL
     ALSRMAppReceipt *receipt = [ALSRMAppReceipt bundleReceipt];
     return [self verifyAppReceipt:receipt];
+#endif
+    return YES;
 }
 
 #pragma mark - Properties
@@ -75,7 +81,7 @@
 }
 
 #pragma mark - Private
-
+#ifdef ALS_IAP_OPENSSL
 - (BOOL)verifyAppReceipt:(ALSRMAppReceipt*)receipt
 {
     if (!receipt) return NO;
@@ -85,7 +91,7 @@
     if (![receipt.appVersion isEqualToString:self.bundleVersion]) return NO;
     
     if (![receipt verifyReceiptHash]) return NO;
-    
+
     return YES;
 }
 
@@ -113,6 +119,7 @@
     }
     return YES;
 }
+#endif
 
 - (void)failWithBlock:(void (^)(NSError *error))failureBlock message:(NSString*)message
 {

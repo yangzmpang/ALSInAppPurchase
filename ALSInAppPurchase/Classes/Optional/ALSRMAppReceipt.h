@@ -20,6 +20,16 @@
 
 #import <Foundation/Foundation.h>
 
+#if __has_include(<openssl/pkcs7.h>)
+#define ALS_IAP_OPENSSL
+#import <openssl/pkcs7.h>
+#import <openssl/objects.h>
+#import <openssl/sha.h>
+#import <openssl/x509.h>
+#endif
+
+#ifdef ALS_IAP_OPENSSL
+
 /** Represents the app receipt.
  */
 __attribute__((availability(ios,introduced=7.0)))
@@ -176,3 +186,5 @@ __attribute__((availability(ios,introduced=7.0)))
 - (BOOL)isActiveAutoRenewableSubscriptionForDate:(NSDate*)date;
 
 @end
+
+#endif

@@ -35,9 +35,6 @@
   "dependencies": {
     "PodAsset": [
 
-    ],
-    "OpenSSL": [
-
     ]
   },
   "pod_target_xcconfig": {
